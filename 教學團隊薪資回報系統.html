@@ -6,247 +6,219 @@
 <title>教學團隊薪資回報系統</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --brand:#d98c73;--brand-dark:#c47a60;--bg:#f7f3ec;--card:#fff;
-  --text:#5a4d41;--text-dark:#3a2f25;--muted:#a89880;--border:#e8dfd4;
-  --blue:#3b5bdb;--success:#2f9e44;--error:#e03131;--purple:#7c3aed;
-}
+:root{--brand:#d98c73;--brand-dark:#c47a60;--bg:#f7f3ec;--card:#fff;--text:#5a4d41;--text-dark:#3a2f25;--muted:#a89880;--border:#e8dfd4;--blue:#3b5bdb;--success:#2f9e44;--error:#e03131;--purple:#7c3aed;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px;}
-
 nav{background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-bottom:2px solid rgba(217,140,115,0.12);padding:14px 24px;position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 16px rgba(90,77,65,0.06);}
 .nav-brand{display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;}
-.nav-icon{background:var(--brand);padding:8px;border-radius:14px;color:white;display:flex;align-items:center;transition:transform 0.15s;}
-.nav-icon:active{transform:scale(0.88);}
-.nav-title{font-size:18px;font-weight:900;color:var(--text-dark);letter-spacing:-0.5px;}
+.nav-icon{background:var(--brand);padding:8px;border-radius:14px;color:white;display:flex;align-items:center;transition:transform .15s;}
+.nav-icon:active{transform:scale(.88);}
+.nav-title{font-size:18px;font-weight:900;color:var(--text-dark);letter-spacing:-.5px;}
 .admin-badge{background:#fff0f0;color:var(--error);padding:5px 14px;border-radius:50px;font-size:10px;font-weight:900;border:1px solid #ffd0d0;letter-spacing:2px;text-transform:uppercase;}
-.btn-logout{background:#f1f5f9;border:none;padding:8px 18px;border-radius:12px;font-size:13px;font-weight:900;color:#64748b;cursor:pointer;display:flex;align-items:center;gap:6px;transition:color 0.2s;font-family:inherit;}
+.btn-logout{background:#f1f5f9;border:none;padding:8px 18px;border-radius:12px;font-size:13px;font-weight:900;color:#64748b;cursor:pointer;display:flex;align-items:center;gap:6px;transition:color .2s;font-family:inherit;}
 .btn-logout:hover{color:var(--error);}
 .nav-right{display:flex;align-items:center;gap:14px;}
-
 main{max-width:960px;margin:0 auto;padding:32px 16px;}
-
 #loading-screen{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:300;gap:16px;}
-.spinner{width:48px;height:48px;border:4px solid rgba(217,140,115,0.2);border-top-color:var(--brand);border-radius:50%;animation:spin 0.8s linear infinite;}
+.spinner{width:48px;height:48px;border:4px solid rgba(217,140,115,0.2);border-top-color:var(--brand);border-radius:50%;animation:spin .8s linear infinite;}
 .spinner.sm{width:22px;height:22px;border-width:3px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .loading-text{font-size:12px;font-weight:900;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
-
-#toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);z-index:500;width:90%;max-width:440px;padding:16px 20px;border-radius:20px;background:white;font-weight:700;font-size:14px;display:flex;align-items:center;gap:10px;box-shadow:0 16px 48px rgba(0,0,0,0.14);opacity:0;pointer-events:none;transition:opacity 0.3s,transform 0.3s;}
+#toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);z-index:500;width:90%;max-width:440px;padding:16px 20px;border-radius:20px;background:white;font-weight:700;font-size:14px;display:flex;align-items:center;gap:10px;box-shadow:0 16px 48px rgba(0,0,0,.14);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all;}
 #toast.success{border:1.5px solid #b2f2bb;color:var(--success);}
 #toast.error{border:1.5px solid #ffc9c9;color:var(--error);}
 #toast.info{border:1.5px solid #bac8ff;color:var(--blue);}
-
-.card{background:var(--card);border-radius:32px;padding:36px;border:1px solid var(--border);box-shadow:0 4px 24px rgba(90,77,65,0.06);}
-.form-title{font-size:24px;font-weight:900;text-align:center;letter-spacing:2px;text-decoration:underline;text-decoration-color:rgba(217,140,115,0.3);margin-bottom:32px;text-transform:uppercase;color:var(--text-dark);}
+.card{background:var(--card);border-radius:32px;padding:36px;border:1px solid var(--border);box-shadow:0 4px 24px rgba(90,77,65,.06);}
+.form-title{font-size:24px;font-weight:900;text-align:center;letter-spacing:2px;text-decoration:underline;text-decoration-color:rgba(217,140,115,.3);margin-bottom:32px;text-transform:uppercase;color:var(--text-dark);}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
 @media(max-width:540px){.grid-2{grid-template-columns:1fr;}}
 .field{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
 .field-label{font-size:10px;font-weight:900;color:var(--muted);letter-spacing:2px;text-transform:uppercase;padding-left:4px;}
 .field-label.accent{color:var(--brand);}
-
-select,input[type="date"],input[type="text"],input[type="password"],input[type="number"]{
-  width:100%;padding:14px 20px;background:#f8f6f2;border:2px solid var(--border);
-  border-radius:16px;font-family:inherit;font-weight:700;font-size:15px;
-  color:var(--text-dark);outline:none;transition:border-color 0.2s;-webkit-appearance:none;appearance:none;
-}
+select,input[type="date"],input[type="text"],input[type="password"],input[type="number"]{width:100%;padding:14px 20px;background:#f8f6f2;border:2px solid var(--border);border-radius:16px;font-family:inherit;font-weight:700;font-size:15px;color:var(--text-dark);outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none;}
 select:focus,input:focus{border-color:var(--brand);}
-
-.hours-box{background:#fcfbf9;padding:28px;border-radius:28px;border:2px dashed rgba(217,140,115,0.35);text-align:center;margin-bottom:20px;}
+.hours-box{background:#fcfbf9;padding:28px;border-radius:28px;border:2px dashed rgba(217,140,115,.35);text-align:center;margin-bottom:20px;}
 .hours-label{font-size:11px;font-weight:900;color:var(--brand);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
 #input-hours{font-family:'DM Mono',monospace;font-size:72px;font-weight:500;background:transparent;border:none;border-radius:0;padding:0;text-align:center;color:var(--text-dark);width:100%;}
 #input-hours:focus{border:none;outline:none;}
-
-.btn-submit{width:100%;background:var(--brand);color:white;border:none;padding:20px;border-radius:24px;font-family:inherit;font-size:17px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 8px 24px rgba(217,140,115,0.35);transition:background 0.2s,transform 0.15s;letter-spacing:1px;}
+.btn-submit{width:100%;background:var(--brand);color:white;border:none;padding:20px;border-radius:24px;font-family:inherit;font-size:17px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 8px 24px rgba(217,140,115,.35);transition:background .2s,transform .15s;letter-spacing:1px;}
 .btn-submit:hover{background:var(--brand-dark);}
-.btn-submit:active{transform:scale(0.97);}
-.btn-submit:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+.btn-submit:active{transform:scale(.97);}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+
+/* 前台紀錄區 */
+.my-records-section{margin-top:24px;}
+.my-records-title{font-size:14px;font-weight:900;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;padding-left:4px;}
+.my-record-item{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 18px;margin-bottom:8px;display:flex;align-items:center;gap:12px;font-size:13px;}
+.my-record-date{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);min-width:80px;}
+.my-record-info{flex:1;font-weight:700;color:var(--text-dark);}
+.my-record-hours{font-family:'DM Mono',monospace;font-weight:900;color:var(--blue);}
 
 /* ADMIN */
-.admin-header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px;background:var(--card);padding:18px 24px;border-radius:24px;border:1px solid var(--border);margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,0.04);}
+.admin-header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px;background:var(--card);padding:18px 24px;border-radius:24px;border:1px solid var(--border);margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.04);}
 .month-selector{font-size:22px;font-weight:900;background:transparent;border:none;border-radius:0;padding:0;color:var(--text-dark);cursor:pointer;font-family:inherit;}
 .month-selector:focus{outline:none;}
 .tab-bar{display:flex;gap:4px;background:#f1f5f9;padding:6px;border-radius:16px;border:1px solid var(--border);flex-wrap:wrap;}
-.tab-btn{padding:8px 14px;border-radius:12px;font-family:inherit;font-size:11px;font-weight:900;cursor:pointer;border:none;background:transparent;color:#64748b;transition:all 0.18s;white-space:nowrap;}
-.tab-btn.active{background:white;color:var(--blue);border:1px solid #dce4f7;box-shadow:0 2px 8px rgba(0,0,0,0.07);}
-
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px;}
-.stat-card{background:var(--card);border-radius:24px;padding:24px;border:1px solid var(--border);border-left:5px solid var(--blue);}
+.tab-btn{padding:8px 13px;border-radius:12px;font-family:inherit;font-size:11px;font-weight:900;cursor:pointer;border:none;background:transparent;color:#64748b;transition:all .18s;white-space:nowrap;}
+.tab-btn.active{background:white;color:var(--blue);border:1px solid #dce4f7;box-shadow:0 2px 8px rgba(0,0,0,.07);}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:20px;}
+.stat-card{background:var(--card);border-radius:22px;padding:22px;border:1px solid var(--border);border-left:5px solid var(--blue);}
 .stat-card.dark{background:#1e293b;border-left:5px solid var(--brand);border-bottom:5px solid var(--brand);color:white;}
 .stat-card.green{border-left:5px solid var(--success);}
 .stat-card.red{border-left:5px solid var(--error);}
 .stat-card.purple{border-left:5px solid var(--purple);}
-.stat-label{font-size:10px;font-weight:900;opacity:0.5;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.stat-label{font-size:10px;font-weight:900;opacity:.5;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
 .stat-label.brand{color:var(--brand);opacity:1;}
-.stat-value{font-family:'DM Mono',monospace;font-size:36px;font-weight:500;color:var(--text-dark);}
+.stat-value{font-family:'DM Mono',monospace;font-size:34px;font-weight:500;color:var(--text-dark);}
 .stat-card.dark .stat-value{color:white;}
-.stat-unit{font-size:14px;opacity:0.3;margin-left:2px;}
-
-.btn-export{background:white;color:#1e293b;border:none;padding:10px 18px;border-radius:14px;font-family:inherit;font-size:12px;font-weight:900;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 16px rgba(0,0,0,0.12);transition:background 0.2s;}
+.stat-unit{font-size:13px;opacity:.3;margin-left:2px;}
+.btn-export{background:white;color:#1e293b;border:none;padding:10px 16px;border-radius:13px;font-family:inherit;font-size:12px;font-weight:900;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 16px rgba(0,0,0,.12);transition:background .2s;}
 .btn-export:hover{background:#eff6ff;}
-
-.table-wrap{background:var(--card);border-radius:28px;border:1px solid var(--border);overflow:hidden;overflow-x:auto;}
+.btn-dark{background:#1e293b!important;color:white!important;}
+.btn-dark:hover{background:#334155!important;}
+.table-wrap{background:var(--card);border-radius:24px;border:1px solid var(--border);overflow:hidden;overflow-x:auto;}
 table{width:100%;border-collapse:collapse;min-width:560px;}
 thead{background:#f8fafc;}
-th{padding:14px 18px;text-align:left;font-size:10px;font-weight:900;color:#94a3b8;text-transform:uppercase;letter-spacing:2px;border-bottom:1px solid var(--border);}
+th{padding:13px 16px;text-align:left;font-size:10px;font-weight:900;color:#94a3b8;text-transform:uppercase;letter-spacing:2px;border-bottom:1px solid var(--border);}
 th.center,td.center{text-align:center;}
 th.right,td.right{text-align:right;}
-td{padding:14px 18px;font-size:13px;font-weight:700;border-bottom:1px solid #f1f5f9;color:var(--text-dark);}
+td{padding:13px 16px;font-size:13px;font-weight:700;border-bottom:1px solid #f1f5f9;color:var(--text-dark);}
 tr:last-child td{border-bottom:none;}
 tr:hover td{background:#fafbfc;}
 .badge{background:#eff6ff;color:var(--blue);padding:3px 9px;border-radius:7px;border:1px solid #bfdbfe;font-size:11px;font-weight:900;display:inline-block;}
 .badge-type{padding:3px 8px;border-radius:6px;font-size:10px;font-weight:900;display:inline-block;background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;}
+.badge-branch{padding:3px 8px;border-radius:6px;font-size:10px;font-weight:900;display:inline-block;background:#fdf4ff;color:#7c3aed;border:1px solid #e9d5ff;}
 .hours-pill{color:var(--blue);font-weight:900;}
-.btn-delete{background:#fff1f2;color:#e03131;border:1px solid #ffd0d0;padding:8px;border-radius:12px;cursor:pointer;display:inline-flex;align-items:center;transition:all 0.15s;}
+.btn-delete{background:#fff1f2;color:#e03131;border:1px solid #ffd0d0;padding:8px;border-radius:12px;cursor:pointer;display:inline-flex;align-items:center;transition:all .15s;}
 .btn-delete:hover{background:#e03131;color:white;}
 
-/* 篩選列 */
-.filter-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;align-items:flex-end;}
-.filter-bar select,.filter-bar input{padding:10px 16px;font-size:14px;border-radius:14px;min-width:140px;}
-.filter-bar .field-label{margin-bottom:6px;}
-
-/* 薪資表 */
-.salary-table-wrap{background:var(--card);border-radius:24px;border:1px solid var(--border);overflow:hidden;overflow-x:auto;margin-bottom:20px;}
-.salary-table{width:100%;border-collapse:collapse;min-width:700px;}
+/* 薪資 */
+.filter-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px;align-items:flex-end;}
+.filter-bar select{padding:10px 16px;font-size:14px;border-radius:14px;min-width:140px;}
+.salary-table-wrap{background:var(--card);border-radius:22px;border:1px solid var(--border);overflow:hidden;overflow-x:auto;margin-bottom:18px;}
+.salary-table{width:100%;border-collapse:collapse;min-width:750px;}
 .salary-table thead{background:#f8fafc;}
-.salary-table th{padding:12px 16px;font-size:10px;font-weight:900;color:#94a3b8;text-transform:uppercase;letter-spacing:1.5px;border-bottom:1px solid var(--border);text-align:left;}
+.salary-table th{padding:12px 14px;font-size:10px;font-weight:900;color:#94a3b8;text-transform:uppercase;letter-spacing:1.5px;border-bottom:1px solid var(--border);text-align:left;}
 .salary-table th.right,.salary-table td.right{text-align:right;}
 .salary-table th.center,.salary-table td.center{text-align:center;}
-.salary-table td{padding:14px 16px;font-size:13px;font-weight:700;border-bottom:1px solid #f1f5f9;color:var(--text-dark);vertical-align:middle;}
+.salary-table td{padding:12px 14px;font-size:12px;font-weight:700;border-bottom:1px solid #f1f5f9;color:var(--text-dark);vertical-align:middle;}
 .salary-table tr:last-child td{border-bottom:none;}
 .salary-table tr:hover td{background:#fafbfc;}
-
-.pay-input-group{display:flex;align-items:center;gap:6px;}
-.pay-input-group input{width:90px;padding:8px 12px;font-size:13px;border-radius:10px;border:1.5px solid var(--border);background:#f8f6f2;font-family:'DM Mono',monospace;font-weight:700;}
+.pay-input-group{display:flex;align-items:center;gap:5px;}
+.pay-input-group input{width:80px;padding:7px 10px;font-size:12px;border-radius:9px;border:1.5px solid var(--border);background:#f8f6f2;font-family:'DM Mono',monospace;font-weight:700;outline:none;}
 .pay-input-group input:focus{border-color:var(--brand);}
-.pay-mode-select{padding:7px 10px;font-size:11px;border-radius:10px;border:1.5px solid var(--border);background:#f8f6f2;font-weight:900;min-width:70px;}
+.pay-mode-select{padding:6px 8px;font-size:11px;border-radius:9px;border:1.5px solid var(--border);background:#f8f6f2;font-weight:900;min-width:65px;font-family:inherit;outline:none;}
 .pay-mode-select:focus{border-color:var(--brand);}
-.pay-total{font-family:'DM Mono',monospace;font-size:14px;font-weight:900;color:var(--blue);min-width:70px;text-align:right;}
-
-.salary-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:20px;}
-.summary-card{background:var(--card);border-radius:20px;padding:20px;border:1px solid var(--border);}
+.pay-total{font-family:'DM Mono',monospace;font-size:13px;font-weight:900;color:var(--blue);min-width:70px;text-align:right;}
+.salary-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px;}
+.summary-card{background:var(--card);border-radius:18px;padding:18px;border:1px solid var(--border);}
 .summary-card.income{border-left:5px solid var(--success);}
 .summary-card.expense{border-left:5px solid var(--error);}
 .summary-card.profit{border-left:5px solid var(--purple);}
 .summary-label{font-size:10px;font-weight:900;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
-.summary-value{font-family:'DM Mono',monospace;font-size:28px;font-weight:500;}
+.summary-value{font-family:'DM Mono',monospace;font-size:26px;font-weight:500;}
 .summary-card.income .summary-value{color:var(--success);}
 .summary-card.expense .summary-value{color:var(--error);}
-.summary-card.profit .summary-value{color:var(--purple);}
-
-/* 對帳文字區 */
-.export-text-area{background:#1e293b;border-radius:20px;padding:20px;font-family:'DM Mono',monospace;font-size:13px;color:#94a3b8;white-space:pre-wrap;line-height:1.8;max-height:320px;overflow-y:auto;margin-bottom:12px;}
-.copy-btn{background:var(--brand);color:white;border:none;padding:12px 24px;border-radius:14px;font-family:inherit;font-size:14px;font-weight:900;cursor:pointer;transition:background 0.2s;}
+.export-text-area{background:#1e293b;border-radius:18px;padding:18px;font-family:'DM Mono',monospace;font-size:12px;color:#94a3b8;white-space:pre-wrap;line-height:1.9;max-height:300px;overflow-y:auto;margin-bottom:10px;}
+.copy-btn{background:var(--brand);color:white;border:none;padding:11px 22px;border-radius:13px;font-family:inherit;font-size:13px;font-weight:900;cursor:pointer;transition:background .2s;}
 .copy-btn:hover{background:var(--brand-dark);}
+.section-title{font-size:15px;font-weight:900;color:var(--text-dark);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;}
 
-/* ANALYSIS */
-.analysis-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;}
-.analysis-card{background:var(--card);border-radius:24px;padding:24px;border:1px solid var(--border);transition:border-color 0.2s;}
-.analysis-card:hover{border-color:rgba(217,140,115,0.45);}
-.analysis-name{font-size:18px;font-weight:900;margin-bottom:4px;}
+/* 分析 */
+.analysis-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;}
+.analysis-card{background:var(--card);border-radius:22px;padding:22px;border:1px solid var(--border);transition:border-color .2s;}
+.analysis-card:hover{border-color:rgba(217,140,115,.45);}
+.analysis-name{font-size:17px;font-weight:900;margin-bottom:4px;}
 .analysis-sub{font-size:12px;color:var(--muted);font-weight:700;}
 
-/* SETTINGS */
-.settings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px;}
-.list-editor{background:var(--card);border-radius:22px;padding:20px;border:1px solid var(--border);display:flex;flex-direction:column;gap:10px;}
+/* 設定 */
+.settings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:14px;}
+.list-editor{background:var(--card);border-radius:20px;padding:18px;border:1px solid var(--border);display:flex;flex-direction:column;gap:10px;}
 .list-editor-title{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:900;flex-wrap:wrap;}
 .drag-hint{font-size:9px;color:var(--muted);font-weight:700;}
-.list-items{max-height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:5px;}
-.list-item{display:flex;justify-content:space-between;align-items:center;background:#f8f9fa;padding:7px 10px;border-radius:9px;border:1px solid var(--border);font-size:12px;font-weight:700;cursor:grab;user-select:none;transition:box-shadow 0.15s;gap:6px;}
+.list-items{max-height:175px;overflow-y:auto;display:flex;flex-direction:column;gap:5px;}
+.list-item{display:flex;justify-content:space-between;align-items:center;background:#f8f9fa;padding:7px 10px;border-radius:9px;border:1px solid var(--border);font-size:12px;font-weight:700;cursor:grab;user-select:none;transition:box-shadow .15s;gap:6px;}
 .list-item:active{cursor:grabbing;}
-.list-item.dragging{opacity:0.35;}
-.list-item.drag-over{box-shadow:0 0 0 2px var(--brand);background:rgba(217,140,115,0.08);}
+.list-item.dragging{opacity:.35;}
+.list-item.drag-over{box-shadow:0 0 0 2px var(--brand);background:rgba(217,140,115,.08);}
 .drag-handle{color:#cbd5e1;flex-shrink:0;display:flex;align-items:center;}
-.btn-remove{background:none;border:none;cursor:pointer;color:#cbd5e1;display:flex;align-items:center;padding:2px;transition:color 0.15s;flex-shrink:0;}
+.btn-remove{background:none;border:none;cursor:pointer;color:#cbd5e1;display:flex;align-items:center;padding:2px;transition:color .15s;flex-shrink:0;}
 .btn-remove:hover{color:var(--error);}
 .list-add-row{display:flex;gap:6px;}
 .list-add-row input{flex:1;padding:7px 10px;font-size:12px;border-radius:9px;border:1.5px solid var(--border);background:#f8f9fa;font-family:inherit;font-weight:700;color:var(--text-dark);outline:none;}
 .list-add-row input:focus{border-color:var(--brand);}
-.btn-add{padding:7px 10px;border:none;border-radius:9px;color:white;font-size:13px;cursor:pointer;display:flex;align-items:center;font-weight:900;transition:opacity 0.15s;font-family:inherit;}
-.btn-add:hover{opacity:0.85;}
+.btn-add{padding:7px 10px;border:none;border-radius:9px;color:white;font-size:13px;cursor:pointer;display:flex;align-items:center;font-weight:900;transition:opacity .15s;font-family:inherit;}
+.btn-add:hover{opacity:.85;}
 .pwd-row{display:flex;gap:10px;}
 .pwd-row input{flex:1;}
-.btn-update{background:#1e293b;color:white;border:none;padding:12px 20px;border-radius:14px;font-family:inherit;font-size:13px;font-weight:900;cursor:pointer;white-space:nowrap;transition:background 0.2s;}
+.btn-update{background:#1e293b;color:white;border:none;padding:12px 18px;border-radius:13px;font-family:inherit;font-size:13px;font-weight:900;cursor:pointer;white-space:nowrap;transition:background .2s;}
 .btn-update:hover{background:#334155;}
 
-/* MODALS */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(10px);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px;}
-.modal{background:white;border-radius:40px;padding:40px 32px;width:100%;max-width:360px;text-align:center;border:3px solid rgba(217,140,115,0.15);animation:zoomIn 0.2s ease;}
-.modal-title{font-size:22px;font-weight:900;color:var(--text-dark);margin-bottom:24px;letter-spacing:-0.5px;}
+/* Modal */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px;}
+.modal{background:white;border-radius:40px;padding:40px 32px;width:100%;max-width:360px;text-align:center;border:3px solid rgba(217,140,115,.15);animation:zoomIn .2s ease;}
+.modal-title{font-size:22px;font-weight:900;color:var(--text-dark);margin-bottom:24px;letter-spacing:-.5px;}
 .modal input{text-align:center;font-family:'DM Mono',monospace;font-size:36px;letter-spacing:10px;margin-bottom:20px;border-radius:20px;padding:18px;}
 .modal .btn-submit{font-size:15px;padding:16px;border-radius:20px;letter-spacing:2px;}
 .btn-cancel{margin-top:16px;background:none;border:none;font-family:inherit;font-size:13px;color:#cbd5e1;cursor:pointer;font-weight:700;text-decoration:underline;}
 .btn-cancel:hover{color:#64748b;}
-
 .confirm-modal{max-width:420px;text-align:left;}
 .confirm-modal .modal-title{text-align:center;font-size:18px;}
-.detail-grid{display:flex;flex-direction:column;border:1.5px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:20px;}
+.detail-grid{display:flex;flex-direction:column;border:1.5px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:18px;}
 .detail-row{display:flex;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border);gap:12px;}
 .detail-row:last-child{border-bottom:none;}
 .detail-key{font-size:10px;font-weight:900;color:var(--muted);letter-spacing:2px;text-transform:uppercase;width:72px;flex-shrink:0;}
 .detail-val{font-size:14px;font-weight:900;color:var(--text-dark);flex:1;}
-.detail-val.hours{font-family:'DM Mono',monospace;font-size:28px;color:var(--brand);}
+.detail-val.hours{font-family:'DM Mono',monospace;font-size:26px;color:var(--brand);}
 .confirm-btn-row{display:flex;gap:12px;}
-.btn-confirm-ok{flex:2;background:var(--brand);color:white;border:none;padding:16px;border-radius:20px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;transition:background 0.2s,transform 0.15s;}
+.btn-confirm-ok{flex:2;background:var(--brand);color:white;border:none;padding:15px;border-radius:18px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;transition:background .2s,transform .15s;}
 .btn-confirm-ok:hover{background:var(--brand-dark);}
-.btn-confirm-ok:active{transform:scale(0.97);}
-.btn-confirm-ok:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
-.btn-confirm-back{flex:1;background:#f1f5f9;color:#64748b;border:none;padding:16px;border-radius:20px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:background 0.2s;}
+.btn-confirm-ok:active{transform:scale(.97);}
+.btn-confirm-ok:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.btn-confirm-back{flex:1;background:#f1f5f9;color:#64748b;border:none;padding:15px;border-radius:18px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;}
 .btn-confirm-back:hover{background:#e2e8f0;}
-
 .del-modal{border:3px solid #fff0f0;}
 .del-btn-row{display:flex;gap:12px;margin-top:12px;}
-.btn-danger{flex:1;background:var(--error);color:white;border:none;padding:16px;border-radius:20px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;transition:background 0.2s,transform 0.15s;}
+.btn-danger{flex:1;background:var(--error);color:white;border:none;padding:15px;border-radius:18px;font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;transition:background .2s,transform .15s;}
 .btn-danger:hover{background:#c92a2a;}
-.btn-danger:active{transform:scale(0.97);}
-.btn-danger:disabled{opacity:0.6;cursor:not-allowed;}
-.btn-cancel-del{flex:1;background:#f1f5f9;color:#64748b;border:none;padding:16px;border-radius:20px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:background 0.2s;}
+.btn-danger:active{transform:scale(.97);}
+.btn-danger:disabled{opacity:.6;cursor:not-allowed;}
+.btn-cancel-del{flex:1;background:#f1f5f9;color:#64748b;border:none;padding:15px;border-radius:18px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;}
 .btn-cancel-del:hover{background:#e2e8f0;}
-
-footer{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;z-index:50;}
+footer{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;z-index:50;}
 .dot-indicator{display:flex;align-items:center;gap:10px;}
 .dot{width:10px;height:10px;border-radius:50%;}
-.dot.online{background:#22c55e;box-shadow:0 0 12px rgba(34,197,94,0.8);}
+.dot.online{background:#22c55e;box-shadow:0 0 12px rgba(34,197,94,.8);}
 .dot.offline{background:#f59e0b;animation:pulse 1.5s infinite;}
 .dot-label{font-size:10px;font-weight:900;color:#94a3b8;letter-spacing:2px;text-transform:uppercase;}
-.footer-admin{font-size:10px;font-weight:900;color:#cbd5e1;letter-spacing:2px;cursor:pointer;text-transform:uppercase;transition:color 0.2s;}
+.footer-admin{font-size:10px;font-weight:900;color:#cbd5e1;letter-spacing:2px;cursor:pointer;text-transform:uppercase;transition:color .2s;}
 .footer-admin:hover{color:var(--brand);}
-
-@keyframes zoomIn{from{opacity:0;transform:scale(0.88);}to{opacity:1;transform:scale(1);}}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
-.hidden{display:none !important;}
-.empty-row td{text-align:center;color:var(--muted);font-style:italic;padding:40px;}
-.section-title{font-size:16px;font-weight:900;color:var(--text-dark);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+@keyframes zoomIn{from{opacity:0;transform:scale(.88);}to{opacity:1;transform:scale(1);}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.hidden{display:none!important;}
+.empty-row td{text-align:center;color:var(--muted);font-style:italic;padding:36px;}
 </style>
 </head>
 <body>
 
-<div id="loading-screen">
-  <div class="spinner"></div>
-  <p class="loading-text">雲端連線中...</p>
-</div>
+<div id="loading-screen"><div class="spinner"></div><p class="loading-text">雲端連線中...</p></div>
 
 <nav>
   <div class="nav-brand" id="nav-brand">
-    <div class="nav-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
-    </div>
+    <div class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg></div>
     <span class="nav-title">教學團隊管理系統</span>
   </div>
   <div class="nav-right hidden" id="nav-right">
     <span class="admin-badge">Admin Mode</span>
-    <button class="btn-logout" id="btn-logout">
-      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-      登出後台
-    </button>
+    <button class="btn-logout" id="btn-logout"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>登出後台</button>
   </div>
 </nav>
-
 <div id="toast"></div>
 
 <main>
-  <!-- 老師填報 -->
+  <!-- ── 前台 ── -->
   <div id="view-teacher" class="hidden">
     <div class="card">
       <h2 class="form-title">上課回報系統</h2>
@@ -257,7 +229,7 @@ footer{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.85);
             <select id="f-teacher" required></select>
           </div>
           <div class="field">
-            <label class="field-label">上課日期</label>
+            <label class="field-label">上課日期（僅限今天以前）</label>
             <input type="date" id="f-date" required />
           </div>
         </div>
@@ -267,7 +239,7 @@ footer{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.85);
             <select id="f-branch" required></select>
           </div>
           <div class="field">
-            <label class="field-label accent">學生名字 (選填)</label>
+            <label class="field-label accent">學生名字（選填）</label>
             <select id="f-student" required></select>
           </div>
         </div>
@@ -282,7 +254,7 @@ footer{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.85);
           </div>
         </div>
         <div class="hours-box">
-          <div class="hours-label">本次上課時數 (小時)</div>
+          <div class="hours-label">本次上課時數（小時）</div>
           <input type="number" id="input-hours" step="0.1" min="0.1" placeholder="0.0" required />
         </div>
         <button type="submit" class="btn-submit">
@@ -291,15 +263,19 @@ footer{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.85);
         </button>
       </form>
     </div>
+
+    <!-- 自己的紀錄 -->
+    <div class="my-records-section" id="my-records-section">
+      <div class="my-records-title">📋 我的本月上課紀錄</div>
+      <div id="my-records-list"></div>
+    </div>
   </div>
 
-  <!-- 管理員後台 -->
+  <!-- ── 後台 ── -->
   <div id="view-admin" class="hidden">
     <div class="admin-header">
       <div style="display:flex;align-items:center;gap:14px">
-        <div style="background:var(--blue);padding:10px;border-radius:16px;display:flex;color:white">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
-        </div>
+        <div style="background:var(--blue);padding:10px;border-radius:16px;display:flex;color:white"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg></div>
         <select id="month-select" class="month-selector"></select>
       </div>
       <div class="tab-bar">
@@ -311,126 +287,97 @@ footer{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.85);
       </div>
     </div>
 
-    <!-- TAB: 帳務看板 -->
+    <!-- 帳務看板 -->
     <div id="tab-records">
       <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">當月總時數</div>
-          <div class="stat-value" id="total-hours">0.0 <span class="stat-unit">H</span></div>
-        </div>
+        <div class="stat-card"><div class="stat-label">當月總時數</div><div class="stat-value" id="total-hours">0.0<span class="stat-unit">H</span></div></div>
         <div class="stat-card dark">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
-            <div>
-              <div class="stat-label brand">Google Sheets</div>
-              <div class="stat-value" id="total-records">0 <span class="stat-unit">筆</span></div>
-            </div>
-            <button class="btn-export" id="btn-export">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              匯出 CSV
-            </button>
+            <div><div class="stat-label brand">Google Sheets</div><div class="stat-value" id="total-records">0<span class="stat-unit">筆</span></div></div>
+            <button class="btn-export" id="btn-export"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>匯出CSV</button>
           </div>
         </div>
       </div>
       <div class="table-wrap">
-        <table>
-          <thead><tr>
-            <th class="center">日期</th><th>教師</th><th class="center">學生</th><th>課程內容</th><th class="right">刪除</th>
-          </tr></thead>
-          <tbody id="records-tbody"></tbody>
-        </table>
+        <table><thead><tr>
+          <th class="center">日期</th><th>教師</th><th>分校</th><th class="center">學生</th><th>課程</th><th class="center">類型</th><th class="right">時數</th><th class="right">刪除</th>
+        </tr></thead><tbody id="records-tbody"></tbody></table>
       </div>
     </div>
 
-    <!-- TAB: 老師薪資 -->
+    <!-- 老師薪資 -->
     <div id="tab-salary" class="hidden">
       <div class="filter-bar">
-        <div>
-          <div class="field-label" style="margin-bottom:6px">選擇教師</div>
-          <select id="salary-teacher-select" style="min-width:150px;padding:10px 16px;font-size:14px;border-radius:14px;"></select>
-        </div>
+        <div><div class="field-label" style="margin-bottom:6px">選擇教師</div>
+        <select id="salary-teacher-select" style="min-width:150px;padding:10px 16px;font-size:14px;border-radius:14px;"></select></div>
       </div>
       <div class="salary-summary" id="salary-summary"></div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px;">
-        <div class="section-title">📋 課程明細（合併計算）</div>
-        <div style="display:flex;gap:8px;">
-          <button class="btn-export" id="btn-export-salary-csv">
-            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            匯出 CSV
-          </button>
-          <button class="btn-export" id="btn-gen-salary-text" style="background:#1e293b;color:white;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            產生對帳文字
-          </button>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+        <div class="section-title">📋 課程明細（依分校＋課程合併）</div>
+        <div class="btn-row">
+          <button class="btn-export" id="btn-export-salary-csv"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>匯出CSV</button>
+          <button class="btn-export btn-dark" id="btn-gen-salary-text"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>產生給老師的對帳文字</button>
         </div>
       </div>
       <div class="salary-table-wrap">
         <table class="salary-table">
           <thead><tr>
-            <th>課程</th><th>類型</th><th class="center">堂數</th><th class="center">總時數</th>
-            <th>補習班收入</th><th class="right">小計</th>
-            <th>老師薪資</th><th class="right">小計</th>
+            <th>分校</th><th>課程</th><th>類型</th><th class="center">堂數</th><th class="center">總時數</th>
+            <th>補習班收入</th><th class="right">收入小計</th>
+            <th>老師薪資</th><th class="right">薪資小計</th>
           </tr></thead>
           <tbody id="salary-tbody"></tbody>
           <tfoot id="salary-tfoot"></tfoot>
         </table>
       </div>
+      <!-- 日期明細 -->
+      <div class="section-title">🗓 各堂日期明細</div>
+      <div class="table-wrap" style="margin-bottom:18px">
+        <table><thead><tr>
+          <th class="center">日期</th><th>分校</th><th>課程</th><th>類型</th><th class="center">學生</th><th class="right">時數</th>
+        </tr></thead><tbody id="salary-detail-tbody"></tbody></table>
+      </div>
       <div id="salary-text-area" class="hidden">
-        <div class="section-title" style="margin-top:20px">📤 對帳文字（可直接複製貼給老師）</div>
+        <div class="section-title" style="margin-top:8px">📤 給老師的對帳文字</div>
         <div class="export-text-area" id="salary-text-content"></div>
         <button class="copy-btn" id="btn-copy-salary-text">📋 複製文字</button>
       </div>
     </div>
 
-    <!-- TAB: 分校對帳 -->
+    <!-- 分校對帳 -->
     <div id="tab-branch" class="hidden">
       <div class="filter-bar">
-        <div>
-          <div class="field-label" style="margin-bottom:6px">選擇分校</div>
-          <select id="branch-select" style="min-width:150px;padding:10px 16px;font-size:14px;border-radius:14px;"></select>
-        </div>
+        <div><div class="field-label" style="margin-bottom:6px">選擇分校</div>
+        <select id="branch-select" style="min-width:150px;padding:10px 16px;font-size:14px;border-radius:14px;"></select></div>
       </div>
       <div class="stats-grid" id="branch-stats"></div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
         <div class="section-title">📋 上課明細</div>
-        <div style="display:flex;gap:8px;">
-          <button class="btn-export" id="btn-export-branch-csv">
-            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            匯出 CSV
-          </button>
-          <button class="btn-export" id="btn-gen-branch-text" style="background:#1e293b;color:white;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            產生對帳文字
-          </button>
+        <div class="btn-row">
+          <button class="btn-export" id="btn-export-branch-csv"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>匯出CSV</button>
+          <button class="btn-export btn-dark" id="btn-gen-branch-text"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>產生對帳文字</button>
         </div>
       </div>
       <div class="table-wrap">
-        <table>
-          <thead><tr>
-            <th class="center">日期</th><th>教師</th><th class="center">學生</th><th>課程</th><th class="center">類型</th><th class="right">時數</th>
-          </tr></thead>
-          <tbody id="branch-tbody"></tbody>
-        </table>
+        <table><thead><tr>
+          <th class="center">日期</th><th>教師</th><th class="center">學生</th><th>課程</th><th class="center">類型</th><th class="right">時數</th>
+        </tr></thead><tbody id="branch-tbody"></tbody></table>
       </div>
       <div id="branch-text-area" class="hidden">
-        <div class="section-title" style="margin-top:20px">📤 對帳文字（可直接複製貼給分校老闆）</div>
+        <div class="section-title" style="margin-top:18px">📤 對帳文字（給分校老闆）</div>
         <div class="export-text-area" id="branch-text-content"></div>
         <button class="copy-btn" id="btn-copy-branch-text">📋 複製文字</button>
       </div>
     </div>
 
-    <!-- TAB: 報表分析 -->
-    <div id="tab-analysis" class="hidden">
-      <div class="analysis-grid" id="analysis-grid"></div>
-    </div>
+    <!-- 報表分析 -->
+    <div id="tab-analysis" class="hidden"><div class="analysis-grid" id="analysis-grid"></div></div>
 
-    <!-- TAB: 系統設定 -->
+    <!-- 系統設定 -->
     <div id="tab-settings" class="hidden">
-      <div class="card" style="margin-bottom:20px">
+      <div class="card" style="margin-bottom:18px">
         <div class="field-label" style="margin-bottom:12px">修改管理密碼</div>
-        <div class="pwd-row">
-          <input type="text" id="new-pwd" placeholder="輸入新密碼..." />
-          <button class="btn-update" id="btn-update-pwd">更新密碼</button>
-        </div>
+        <div class="pwd-row"><input type="text" id="new-pwd" placeholder="輸入新密碼..." /><button class="btn-update" id="btn-update-pwd">更新密碼</button></div>
       </div>
       <div class="settings-grid" id="settings-grid"></div>
     </div>
@@ -438,11 +385,8 @@ footer{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.85);
 </main>
 
 <footer>
-  <div class="dot-indicator">
-    <div class="dot offline" id="status-dot"></div>
-    <span class="dot-label" id="status-label">連線中...</span>
-  </div>
-  <span class="footer-admin" id="footer-admin-btn">V41.0 • 點此進入後台</span>
+  <div class="dot-indicator"><div class="dot offline" id="status-dot"></div><span class="dot-label" id="status-label">連線中...</span></div>
+  <span class="footer-admin" id="footer-admin-btn">V42.0 • 點此進入後台</span>
 </footer>
 
 <!-- 密碼 Modal -->
@@ -480,54 +424,55 @@ footer{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.85);
   <div class="modal del-modal">
     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#e03131" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:14px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
     <div class="modal-title" style="font-size:19px">確定要刪除此筆紀錄？</div>
-    <div class="del-btn-row">
-      <button class="btn-cancel-del" id="btn-cancel-del">取消</button>
-      <button class="btn-danger" id="btn-confirm-del">確定刪除</button>
-    </div>
+    <div class="del-btn-row"><button class="btn-cancel-del" id="btn-cancel-del">取消</button><button class="btn-danger" id="btn-confirm-del">確定刪除</button></div>
   </div>
 </div>
 
 <script>
-const API_URL = 'https://script.google.com/macros/s/AKfycbzzgOpay-mktBXUtWJCdPwPgXNxiNF_-o_Xnx92erYPKtDMo7eEuGfxExfOt8S430SjDw/exec';
+const API_URL='https://script.google.com/macros/s/AKfycbzzgOpay-mktBXUtWJCdPwPgXNxiNF_-o_Xnx92erYPKtDMo7eEuGfxExfOt8S430SjDw/exec';
+const DEFAULT_CONFIG={branches:['本部','家教'],teachers:['林老師','陳老師'],students:['(不指定)'],courses:['國中數學','高中理化'],types:['正課','輔導課'],password:'4628666'};
 
-const DEFAULT_CONFIG = {
-  branches:['本部','家教'], teachers:['林老師','陳老師'],
-  students:['(不指定)'], courses:['國中數學','高中理化'],
-  types:['正課','輔導課'], password:'4628666'
-};
+let config={...DEFAULT_CONFIG},records=[],salaryData={};
+let isAdmin=false,clickCount=0,pendingDeleteId=null,pendingRecord=null;
+let currentMonth=new Date().toISOString().slice(0,7),activeTab='records';
 
-let config = {...DEFAULT_CONFIG};
-let records = [];
-let salaryData = {}; // { "teacherKey|course|type": { incomeAmt, incomeMode, teacherAmt, teacherMode } }
-let isAdmin = false, clickCount = 0, pendingDeleteId = null, pendingRecord = null;
-let currentMonth = new Date().toISOString().slice(0,7);
-let activeTab = 'records';
+// ── 工具 ──────────────────────────────────────────────────────────────────────
+function fmtDate(s){
+  if(!s) return '';
+  // 支援 ISO string 如 2026-04-30T00:00:00.000Z 或純 2026-04-30
+  const d=s.toString().slice(0,10);
+  return d;
+}
+function today(){ return new Date().toISOString().slice(0,10); }
+async function apiGet(){const r=await fetch(API_URL);return r.json();}
+async function apiPost(body){const r=await fetch(API_URL,{method:'POST',body:JSON.stringify(body)});return r.json();}
+function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function getSalaryKey(teacher,branch,course,type){return `${teacher}||${branch}||${course}||${type}`;}
+function calcAmt(amt,mode,hours,count){
+  const n=parseFloat(amt)||0;
+  if(mode==='per_session') return n*count;
+  if(mode==='per_hour') return n*hours;
+  return 0;
+}
+function download(name,content,type){const blob=new Blob([content],{type});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();}
 
-// ── API ───────────────────────────────────────────────────────────────────────
-async function apiGet() { const r = await fetch(API_URL); return r.json(); }
-async function apiPost(body) { const r = await fetch(API_URL,{method:'POST',body:JSON.stringify(body)}); return r.json(); }
-function genId() { return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
-
-async function init() {
-  try {
-    const data = await apiGet();
-    if (data.config) config = {...DEFAULT_CONFIG,...data.config};
-    if (!config.types||!config.types.length) config.types = DEFAULT_CONFIG.types;
-    if (data.records) records = data.records.filter(r=>r&&r.id);
-    if (data.salaryData) salaryData = data.salaryData;
+// ── INIT ──────────────────────────────────────────────────────────────────────
+async function init(){
+  try{
+    const data=await apiGet();
+    if(data.config) config={...DEFAULT_CONFIG,...data.config};
+    if(!config.types||!config.types.length) config.types=DEFAULT_CONFIG.types;
+    if(data.records) records=data.records.filter(r=>r&&r.id).map(r=>({...r,date:fmtDate(r.date)}));
+    if(data.salaryData) salaryData=data.salaryData;
     setStatus(true);
-  } catch(e) {
-    setStatus(false);
-    showToast('無法連線至 Google Sheets，請重整頁面','error');
-  }
+  }catch(e){setStatus(false);showToast('無法連線至 Google Sheets，請重整頁面','error');}
   document.getElementById('loading-screen').classList.add('hidden');
   document.getElementById('view-teacher').classList.remove('hidden');
   refreshTeacherForm();
 }
-
-function setStatus(on) {
-  document.getElementById('status-dot').className = 'dot '+(on?'online':'offline');
-  document.getElementById('status-label').textContent = on ? 'Google Sheets 已連線' : '連線失敗';
+function setStatus(on){
+  document.getElementById('status-dot').className='dot '+(on?'online':'offline');
+  document.getElementById('status-label').textContent=on?'Google Sheets 已連線':'連線失敗';
 }
 
 // ── TOAST ─────────────────────────────────────────────────────────────────────
@@ -535,16 +480,13 @@ let toastTimer=null;
 function showToast(msg,type='info'){
   const el=document.getElementById('toast');
   const icons={success:'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>',error:'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',info:'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'};
-  el.className=type;
-  el.innerHTML=(icons[type]||icons.info)+`<span style="flex:1">${msg}</span>`;
-  el.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>el.classList.remove('show'),3500);
+  el.className=type;el.innerHTML=(icons[type]||icons.info)+`<span style="flex:1">${msg}</span>`;
+  el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3500);
 }
 
-// ── FORM ──────────────────────────────────────────────────────────────────────
+// ── 前台表單 ──────────────────────────────────────────────────────────────────
 function populateSelect(id,arr){
-  const el=document.getElementById(id); if(!el) return;
+  const el=document.getElementById(id);if(!el) return;
   const prev=el.value;
   el.innerHTML=(arr||[]).map(v=>`<option value="${v}">${v}</option>`).join('');
   if((arr||[]).includes(prev)) el.value=prev;
@@ -556,18 +498,44 @@ function refreshTeacherForm(){
   populateSelect('f-course',config.courses);
   populateSelect('f-type',config.types);
   const d=document.getElementById('f-date');
-  if(!d.value) d.value=new Date().toISOString().split('T')[0];
+  d.max=today(); // 只能選今天或之前
+  if(!d.value||d.value>today()) d.value=today();
+  renderMyRecords();
 }
+
+function renderMyRecords(){
+  const teacher=document.getElementById('f-teacher').value;
+  const myRecs=records.filter(r=>r.teacher===teacher&&r.date?.startsWith(currentMonth)).sort((a,b)=>b.date.localeCompare(a.date));
+  const list=document.getElementById('my-records-list');
+  if(!myRecs.length){list.innerHTML='<div style="color:var(--muted);font-size:13px;font-weight:700;padding:12px 4px">本月尚無填報紀錄</div>';return;}
+  list.innerHTML=myRecs.map(r=>`
+    <div class="my-record-item">
+      <span class="my-record-date">${r.date}</span>
+      <span class="my-record-info">${r.branch} • ${r.course}【${r.type||''}】${r.student&&r.student!=='(不指定)'?' • '+r.student:''}</span>
+      <span class="my-record-hours">${r.hours}h</span>
+    </div>`).join('');
+}
+
+document.getElementById('f-teacher').addEventListener('change',renderMyRecords);
+document.getElementById('f-date').addEventListener('change',()=>{
+  const d=document.getElementById('f-date');
+  if(d.value>today()){d.value=today();showToast('日期不能填寫未來','error');}
+});
 
 document.getElementById('report-form').addEventListener('submit',e=>{
   e.preventDefault();
+  const dateVal=document.getElementById('f-date').value;
+  if(dateVal>today()){showToast('日期不能填寫未來','error');return;}
   const hours=parseFloat(document.getElementById('input-hours').value);
   if(!hours||hours<=0){showToast('請輸入正確的時數','error');return;}
   pendingRecord={
-    id:genId(), date:document.getElementById('f-date').value,
-    teacher:document.getElementById('f-teacher').value, branch:document.getElementById('f-branch').value,
-    student:document.getElementById('f-student').value, course:document.getElementById('f-course').value,
-    type:document.getElementById('f-type').value, hours:hours.toString(), createdAt:new Date().toISOString()
+    id:genId(),date:dateVal,
+    teacher:document.getElementById('f-teacher').value,
+    branch:document.getElementById('f-branch').value,
+    student:document.getElementById('f-student').value,
+    course:document.getElementById('f-course').value,
+    type:document.getElementById('f-type').value,
+    hours:hours.toString(),createdAt:new Date().toISOString()
   };
   document.getElementById('c-teacher').textContent=pendingRecord.teacher;
   document.getElementById('c-date').textContent=pendingRecord.date;
@@ -582,89 +550,71 @@ document.getElementById('report-form').addEventListener('submit',e=>{
 document.getElementById('btn-confirm-ok').addEventListener('click',async()=>{
   if(!pendingRecord) return;
   const btn=document.getElementById('btn-confirm-ok');
-  btn.disabled=true; btn.innerHTML='<div class="spinner sm" style="display:inline-block;vertical-align:middle;margin-right:8px"></div>上傳中...';
+  btn.disabled=true;btn.innerHTML='<div class="spinner sm" style="display:inline-block;vertical-align:middle;margin-right:8px"></div>上傳中...';
   try{
     await apiPost({action:'add',...pendingRecord});
     records.push(pendingRecord);
     document.getElementById('input-hours').value='';
     document.getElementById('confirm-modal').classList.add('hidden');
     showToast('報帳成功！已同步至 Google Sheets ✅','success');
-    setStatus(true); pendingRecord=null;
+    setStatus(true);pendingRecord=null;
+    renderMyRecords();
   }catch(err){showToast('上傳失敗，請檢查網路連線','error');}
-  btn.disabled=false; btn.textContent='✅ 確認送出';
+  btn.disabled=false;btn.textContent='✅ 確認送出';
 });
+document.getElementById('btn-confirm-back').addEventListener('click',()=>{document.getElementById('confirm-modal').classList.add('hidden');pendingRecord=null;});
 
-document.getElementById('btn-confirm-back').addEventListener('click',()=>{
-  document.getElementById('confirm-modal').classList.add('hidden'); pendingRecord=null;
-});
-
-// ── 月份 & 篩選 ───────────────────────────────────────────────────────────────
+// ── 月份 ──────────────────────────────────────────────────────────────────────
 function getMonthOptions(){
   const months=new Set(records.map(r=>r.date?.slice(0,7)).filter(Boolean));
-  months.add(currentMonth);
-  return Array.from(months).sort().reverse();
+  months.add(currentMonth);return Array.from(months).sort().reverse();
 }
 function refreshMonthSelect(){
   const sel=document.getElementById('month-select');
-  const opts=getMonthOptions(); const prev=sel.value||currentMonth;
+  const opts=getMonthOptions();const prev=sel.value||currentMonth;
   sel.innerHTML=opts.map(m=>`<option value="${m}">${m}</option>`).join('');
-  sel.value=opts.includes(prev)?prev:opts[0]; currentMonth=sel.value;
+  sel.value=opts.includes(prev)?prev:opts[0];currentMonth=sel.value;
 }
-function getFiltered(){ return records.filter(r=>r.date?.startsWith(currentMonth)).sort((a,b)=>(b.date||'').localeCompare(a.date||'')); }
+function getFiltered(){return records.filter(r=>r.date?.startsWith(currentMonth)).sort((a,b)=>(b.date||'').localeCompare(a.date||''));}
 
 // ── 帳務看板 ──────────────────────────────────────────────────────────────────
 function renderRecordsTab(){
   const filtered=getFiltered();
   const totalH=filtered.reduce((s,r)=>s+(parseFloat(r.hours)||0),0);
-  document.getElementById('total-hours').innerHTML=`${totalH.toFixed(1)} <span class="stat-unit">H</span>`;
-  document.getElementById('total-records').innerHTML=`${records.length} <span class="stat-unit">筆</span>`;
+  document.getElementById('total-hours').innerHTML=`${totalH.toFixed(1)}<span class="stat-unit">H</span>`;
+  document.getElementById('total-records').innerHTML=`${records.length}<span class="stat-unit">筆</span>`;
   const tbody=document.getElementById('records-tbody');
-  if(!filtered.length){tbody.innerHTML=`<tr class="empty-row"><td colspan="5">本月尚無紀錄</td></tr>`;return;}
-  tbody.innerHTML=filtered.map(r=>`
-    <tr>
-      <td class="center" style="font-family:'DM Mono',monospace;font-size:12px">${r.date||''}</td>
-      <td>${r.teacher||''}</td>
-      <td class="center"><span class="badge">${r.student||'-'}</span></td>
-      <td style="color:var(--muted);font-size:12px">${r.branch||''} • ${r.course||''} ${r.type?`<span class="badge-type">${r.type}</span>`:''} <span class="hours-pill">(${r.hours||0}h)</span></td>
-      <td class="right"><button class="btn-delete" data-id="${r.id}">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-      </button></td>
-    </tr>`).join('');
+  if(!filtered.length){tbody.innerHTML=`<tr class="empty-row"><td colspan="8">本月尚無紀錄</td></tr>`;return;}
+  tbody.innerHTML=filtered.map(r=>`<tr>
+    <td class="center" style="font-family:'DM Mono',monospace;font-size:12px">${r.date}</td>
+    <td>${r.teacher||''}</td>
+    <td><span class="badge-branch">${r.branch||''}</span></td>
+    <td class="center"><span class="badge">${r.student||'-'}</span></td>
+    <td>${r.course||''}</td>
+    <td class="center"><span class="badge-type">${r.type||'-'}</span></td>
+    <td class="right" style="font-family:'DM Mono',monospace">${r.hours||0}h</td>
+    <td class="right"><button class="btn-delete" data-id="${r.id}"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button></td>
+  </tr>`).join('');
   tbody.querySelectorAll('.btn-delete').forEach(btn=>btn.addEventListener('click',()=>openDelModal(btn.dataset.id)));
 }
 
 // ── 老師薪資 ──────────────────────────────────────────────────────────────────
-function getSalaryKey(teacher,course,type){ return `${teacher}||${course}||${type}`; }
-function calcAmt(amt,mode,hours,count){
-  const n=parseFloat(amt)||0;
-  if(mode==='per_session') return n*count;
-  if(mode==='per_hour') return n*hours;
-  return 0;
-}
-
 function renderSalaryTab(){
-  const sel=document.getElementById('salary-teacher-select');
   populateSelect('salary-teacher-select',config.teachers);
-
-  const teacher=sel.value||config.teachers[0]||'';
+  const teacher=document.getElementById('salary-teacher-select').value||config.teachers[0]||'';
   const filtered=getFiltered().filter(r=>r.teacher===teacher);
 
-  // 合併：course+type 為 key
+  // 合併：branch+course+type
   const groups={};
   filtered.forEach(r=>{
-    const k=`${r.course}||${r.type||''}`;
-    if(!groups[k]) groups[k]={course:r.course,type:r.type||'',count:0,hours:0};
-    groups[k].count++;
-    groups[k].hours+=parseFloat(r.hours)||0;
+    const k=`${r.branch}||${r.course}||${r.type||''}`;
+    if(!groups[k]) groups[k]={branch:r.branch,course:r.course,type:r.type||'',count:0,hours:0};
+    groups[k].count++;groups[k].hours+=parseFloat(r.hours)||0;
   });
 
-  // 統計
-  let totalIncome=0, totalTeacher=0;
-  const rows=Object.entries(groups);
-
-  // summary
-  rows.forEach(([k,g])=>{
-    const sk=getSalaryKey(teacher,g.course,g.type);
+  let totalIncome=0,totalTeacher=0;
+  Object.entries(groups).forEach(([k,g])=>{
+    const sk=getSalaryKey(teacher,g.branch,g.course,g.type);
     const sd=salaryData[sk]||{};
     totalIncome+=calcAmt(sd.incomeAmt,sd.incomeMode,g.hours,g.count);
     totalTeacher+=calcAmt(sd.teacherAmt,sd.teacherMode,g.hours,g.count);
@@ -674,117 +624,157 @@ function renderSalaryTab(){
   document.getElementById('salary-summary').innerHTML=`
     <div class="summary-card income"><div class="summary-label">補習班收入</div><div class="summary-value">$${totalIncome.toLocaleString()}</div></div>
     <div class="summary-card expense"><div class="summary-label">老師薪資</div><div class="summary-value">$${totalTeacher.toLocaleString()}</div></div>
-    <div class="summary-card profit"><div class="summary-label">盈餘</div><div class="summary-value" style="color:${profit>=0?'var(--purple)':'var(--error)'}">$${profit.toLocaleString()}</div></div>
-  `;
+    <div class="summary-card profit"><div class="summary-label">盈餘</div><div class="summary-value" style="color:${profit>=0?'var(--purple)':'var(--error)'}">$${profit.toLocaleString()}</div></div>`;
 
-  const modeOpts=`<option value="per_session">/ 堂</option><option value="per_hour">/ 小時</option>`;
+  const modeOpts=`<option value="per_session">/ 堂</option><option value="per_hour">/ 時</option>`;
   const tbody=document.getElementById('salary-tbody');
   const tfoot=document.getElementById('salary-tfoot');
 
-  if(!rows.length){
-    tbody.innerHTML=`<tr class="empty-row"><td colspan="8">本月該教師尚無紀錄</td></tr>`;
-    tfoot.innerHTML=''; return;
-  }
+  if(!Object.keys(groups).length){tbody.innerHTML=`<tr class="empty-row"><td colspan="9">本月該教師尚無紀錄</td></tr>`;tfoot.innerHTML='';
+    document.getElementById('salary-detail-tbody').innerHTML=`<tr class="empty-row"><td colspan="6">尚無資料</td></tr>`;return;}
 
-  tbody.innerHTML=rows.map(([k,g])=>{
-    const sk=getSalaryKey(teacher,g.course,g.type);
+  tbody.innerHTML=Object.entries(groups).map(([k,g])=>{
+    const sk=getSalaryKey(teacher,g.branch,g.course,g.type);
     const sd=salaryData[sk]||{incomeAmt:'',incomeMode:'per_session',teacherAmt:'',teacherMode:'per_session'};
-    const incomeTotal=calcAmt(sd.incomeAmt,sd.incomeMode,g.hours,g.count);
-    const teacherTotal=calcAmt(sd.teacherAmt,sd.teacherMode,g.hours,g.count);
+    const iT=calcAmt(sd.incomeAmt,sd.incomeMode,g.hours,g.count);
+    const tT=calcAmt(sd.teacherAmt,sd.teacherMode,g.hours,g.count);
     return `<tr data-sk="${sk}" data-hours="${g.hours}" data-count="${g.count}">
+      <td><span class="badge-branch">${g.branch}</span></td>
       <td><strong>${g.course}</strong></td>
       <td><span class="badge-type">${g.type}</span></td>
       <td class="center"><strong>${g.count}</strong> 堂</td>
       <td class="center">${g.hours.toFixed(1)} h</td>
-      <td>
-        <div class="pay-input-group">
-          <input type="number" class="income-amt" value="${sd.incomeAmt}" placeholder="金額" min="0" step="1" />
-          <select class="income-mode pay-mode-select">${modeOpts}</select>
-        </div>
-      </td>
-      <td class="right"><span class="pay-total income-total">$${incomeTotal.toLocaleString()}</span></td>
-      <td>
-        <div class="pay-input-group">
-          <input type="number" class="teacher-amt" value="${sd.teacherAmt}" placeholder="金額" min="0" step="1" />
-          <select class="teacher-mode pay-mode-select">${modeOpts}</select>
-        </div>
-      </td>
-      <td class="right"><span class="pay-total teacher-total">$${teacherTotal.toLocaleString()}</span></td>
+      <td><div class="pay-input-group"><input type="number" class="income-amt" value="${sd.incomeAmt}" placeholder="金額" min="0" step="1"/><select class="income-mode pay-mode-select">${modeOpts}</select></div></td>
+      <td class="right"><span class="pay-total income-total">$${iT.toLocaleString()}</span></td>
+      <td><div class="pay-input-group"><input type="number" class="teacher-amt" value="${sd.teacherAmt}" placeholder="金額" min="0" step="1"/><select class="teacher-mode pay-mode-select">${modeOpts}</select></div></td>
+      <td class="right"><span class="pay-total teacher-total">$${tT.toLocaleString()}</span></td>
     </tr>`;
   }).join('');
 
-  // 設定 select 的值
-  rows.forEach(([k,g])=>{
-    const sk=getSalaryKey(teacher,g.course,g.type);
+  // 設 select 值
+  Object.entries(groups).forEach(([k,g])=>{
+    const sk=getSalaryKey(teacher,g.branch,g.course,g.type);
     const sd=salaryData[sk]||{incomeMode:'per_session',teacherMode:'per_session'};
     const row=tbody.querySelector(`tr[data-sk="${sk}"]`);
-    if(row){
-      row.querySelector('.income-mode').value=sd.incomeMode||'per_session';
-      row.querySelector('.teacher-mode').value=sd.teacherMode||'per_session';
-    }
+    if(row){row.querySelector('.income-mode').value=sd.incomeMode||'per_session';row.querySelector('.teacher-mode').value=sd.teacherMode||'per_session';}
   });
 
   tfoot.innerHTML=`<tr style="background:#f8fafc">
-    <td colspan="4" style="font-weight:900;font-size:12px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">月份合計</td>
+    <td colspan="5" style="font-weight:900;font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">月份合計</td>
     <td></td><td class="right" style="font-family:'DM Mono',monospace;font-weight:900;color:var(--success)">$${totalIncome.toLocaleString()}</td>
     <td></td><td class="right" style="font-family:'DM Mono',monospace;font-weight:900;color:var(--error)">$${totalTeacher.toLocaleString()}</td>
   </tr>`;
 
   // 即時計算
   tbody.querySelectorAll('tr[data-sk]').forEach(row=>{
-    const sk=row.dataset.sk; const hours=parseFloat(row.dataset.hours); const count=parseInt(row.dataset.count);
-    const updateRow=async()=>{
-      const iAmt=row.querySelector('.income-amt').value;
-      const iMode=row.querySelector('.income-mode').value;
-      const tAmt=row.querySelector('.teacher-amt').value;
-      const tMode=row.querySelector('.teacher-mode').value;
-      const iTotal=calcAmt(iAmt,iMode,hours,count);
-      const tTotal=calcAmt(tAmt,tMode,hours,count);
-      row.querySelector('.income-total').textContent=`$${iTotal.toLocaleString()}`;
-      row.querySelector('.teacher-total').textContent=`$${tTotal.toLocaleString()}`;
-      salaryData[sk]={incomeAmt:iAmt,incomeMode:iMode,teacherAmt:tAmt,teacherMode:tMode};
-      try{ await apiPost({action:'saveConfig',config,salaryData}); }catch(e){}
-      renderSalaryTab(); // refresh summary
+    const sk=row.dataset.sk;const hours=parseFloat(row.dataset.hours);const count=parseInt(row.dataset.count);
+    const update=async()=>{
+      const iA=row.querySelector('.income-amt').value;const iM=row.querySelector('.income-mode').value;
+      const tA=row.querySelector('.teacher-amt').value;const tM=row.querySelector('.teacher-mode').value;
+      row.querySelector('.income-total').textContent=`$${calcAmt(iA,iM,hours,count).toLocaleString()}`;
+      row.querySelector('.teacher-total').textContent=`$${calcAmt(tA,tM,hours,count).toLocaleString()}`;
+      salaryData[sk]={incomeAmt:iA,incomeMode:iM,teacherAmt:tA,teacherMode:tM};
+      try{await apiPost({action:'saveConfig',config,salaryData});}catch(e){}
+      // refresh summary only
+      let tI=0,tT2=0;
+      Object.entries(groups).forEach(([k2,g2])=>{
+        const sk2=getSalaryKey(teacher,g2.branch,g2.course,g2.type);const sd2=salaryData[sk2]||{};
+        tI+=calcAmt(sd2.incomeAmt,sd2.incomeMode,g2.hours,g2.count);
+        tT2+=calcAmt(sd2.teacherAmt,sd2.teacherMode,g2.hours,g2.count);
+      });
+      const p=tI-tT2;
+      document.getElementById('salary-summary').innerHTML=`
+        <div class="summary-card income"><div class="summary-label">補習班收入</div><div class="summary-value">$${tI.toLocaleString()}</div></div>
+        <div class="summary-card expense"><div class="summary-label">老師薪資</div><div class="summary-value">$${tT2.toLocaleString()}</div></div>
+        <div class="summary-card profit"><div class="summary-label">盈餘</div><div class="summary-value" style="color:${p>=0?'var(--purple)':'var(--error)'}">$${p.toLocaleString()}</div></div>`;
+      tfoot.innerHTML=`<tr style="background:#f8fafc">
+        <td colspan="5" style="font-weight:900;font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">月份合計</td>
+        <td></td><td class="right" style="font-family:'DM Mono',monospace;font-weight:900;color:var(--success)">$${tI.toLocaleString()}</td>
+        <td></td><td class="right" style="font-family:'DM Mono',monospace;font-weight:900;color:var(--error)">$${tT2.toLocaleString()}</td>
+      </tr>`;
     };
-    row.querySelectorAll('input,select').forEach(el=>el.addEventListener('change',updateRow));
+    row.querySelectorAll('input,select').forEach(el=>el.addEventListener('change',update));
   });
+
+  // 日期明細表
+  const detailTbody=document.getElementById('salary-detail-tbody');
+  detailTbody.innerHTML=filtered.map(r=>`<tr>
+    <td class="center" style="font-family:'DM Mono',monospace;font-size:12px">${r.date}</td>
+    <td><span class="badge-branch">${r.branch||''}</span></td>
+    <td>${r.course||''}</td>
+    <td><span class="badge-type">${r.type||'-'}</span></td>
+    <td class="center"><span class="badge">${r.student||'-'}</span></td>
+    <td class="right" style="font-family:'DM Mono',monospace">${r.hours||0}h</td>
+  </tr>`).join('');
 
   document.getElementById('salary-text-area').classList.add('hidden');
 }
 
-// 產生薪資對帳文字
+// 給老師的對帳文字（只含課程明細+老師薪資，不含補習班收入和盈餘）
 function genSalaryText(){
   const teacher=document.getElementById('salary-teacher-select').value;
-  const filtered=getFiltered().filter(r=>r.teacher===teacher);
+  const filtered=getFiltered().filter(r=>r.teacher===teacher).sort((a,b)=>a.date.localeCompare(b.date));
   const groups={};
   filtered.forEach(r=>{
-    const k=`${r.course}||${r.type||''}`;
-    if(!groups[k]) groups[k]={course:r.course,type:r.type||'',count:0,hours:0};
-    groups[k].count++; groups[k].hours+=parseFloat(r.hours)||0;
+    const k=`${r.branch}||${r.course}||${r.type||''}`;
+    if(!groups[k]) groups[k]={branch:r.branch,course:r.course,type:r.type||'',count:0,hours:0,dates:[]};
+    groups[k].count++;groups[k].hours+=parseFloat(r.hours)||0;groups[k].dates.push(r.date);
   });
-
-  let totalIncome=0,totalTeacher=0;
-  let lines=[];
-  lines.push(`📋 ${currentMonth} ${teacher} 薪資明細`);
-  lines.push(`${'─'.repeat(30)}`);
+  let totalTeacher=0;
+  const lines=[];
+  lines.push(`📋 ${currentMonth} ${teacher} 上課明細確認`);
+  lines.push(`${'─'.repeat(32)}`);
   Object.entries(groups).forEach(([k,g])=>{
-    const sk=getSalaryKey(teacher,g.course,g.type);
+    const sk=getSalaryKey(teacher,g.branch,g.course,g.type);
     const sd=salaryData[sk]||{};
-    const iTotal=calcAmt(sd.incomeAmt,sd.incomeMode,g.hours,g.count);
-    const tTotal=calcAmt(sd.teacherAmt,sd.teacherMode,g.hours,g.count);
-    totalIncome+=iTotal; totalTeacher+=tTotal;
-    const iDesc=sd.incomeAmt?(sd.incomeMode==='per_session'?`$${sd.incomeAmt}/堂`:`$${sd.incomeAmt}/小時`):'未設定';
-    const tDesc=sd.teacherAmt?(sd.teacherMode==='per_session'?`$${sd.teacherAmt}/堂`:`$${sd.teacherAmt}/小時`):'未設定';
-    lines.push(`▸ ${g.course}【${g.type}】`);
+    const tT=calcAmt(sd.teacherAmt,sd.teacherMode,g.hours,g.count);
+    totalTeacher+=tT;
+    const tDesc=sd.teacherAmt?(sd.teacherMode==='per_session'?`$${sd.teacherAmt}/堂`:`$${sd.teacherAmt}/時`):'（未設定）';
+    lines.push(`【${g.branch}】${g.course}（${g.type}）`);
+    lines.push(`  上課日期：${g.dates.join('、')}`);
     lines.push(`  堂數：${g.count} 堂｜時數：${g.hours.toFixed(1)} h`);
-    lines.push(`  補習班收入：${iDesc} → 小計 $${iTotal.toLocaleString()}`);
-    lines.push(`  老師薪資：${tDesc} → 小計 $${tTotal.toLocaleString()}`);
+    lines.push(`  薪資：${tDesc} → 小計 $${tT.toLocaleString()}`);
     lines.push('');
   });
-  lines.push(`${'─'.repeat(30)}`);
-  lines.push(`補習班總收入：$${totalIncome.toLocaleString()}`);
-  lines.push(`老師實領薪資：$${totalTeacher.toLocaleString()}`);
-  lines.push(`盈　　　　餘：$${(totalIncome-totalTeacher).toLocaleString()}`);
+  lines.push(`${'─'.repeat(32)}`);
+  lines.push(`本月實領薪資合計：$${totalTeacher.toLocaleString()}`);
+  return lines.join('\n');
+}
+
+// 給分校老闆的對帳文字（依教師+課程合併，顯示補習班薪資單價×堂數=金額）
+function genBranchText(){
+  const branch=document.getElementById('branch-select').value;
+  const filtered=getFiltered().filter(r=>r.branch===branch).sort((a,b)=>a.date.localeCompare(b.date));
+
+  // 合併：teacher+course+type
+  const groups={};
+  filtered.forEach(r=>{
+    const k=`${r.teacher}||${r.course}||${r.type||''}`;
+    if(!groups[k]) groups[k]={teacher:r.teacher,course:r.course,type:r.type||'',count:0,hours:0};
+    groups[k].count++;groups[k].hours+=parseFloat(r.hours)||0;
+  });
+
+  let grandTotal=0;
+  const lines=[];
+  lines.push(`📋 ${currentMonth}【${branch}】上課明細對帳`);
+  lines.push(`${'─'.repeat(36)}`);
+
+  Object.entries(groups).forEach(([k,g])=>{
+    const sk=getSalaryKey(g.teacher,branch,g.course,g.type);
+    const sd=salaryData[sk]||{};
+    const iT=calcAmt(sd.incomeAmt,sd.incomeMode,g.hours,g.count);
+    grandTotal+=iT;
+    let priceDesc='（未設定）';
+    if(sd.incomeAmt){
+      if(sd.incomeMode==='per_session') priceDesc=`$${sd.incomeAmt} × ${g.count} 堂 = $${iT.toLocaleString()}`;
+      else priceDesc=`$${sd.incomeAmt}/時 × ${g.hours.toFixed(1)}h = $${iT.toLocaleString()}`;
+    }
+    lines.push(`${g.teacher}　${g.course}（${g.type}）`);
+    lines.push(`  ${g.count} 堂｜${g.hours.toFixed(1)} h　補習班薪資：${priceDesc}`);
+  });
+
+  lines.push(`${'─'.repeat(36)}`);
+  lines.push(`合計：${filtered.length} 堂｜$${grandTotal.toLocaleString()}`);
   return lines.join('\n');
 }
 
@@ -795,68 +785,39 @@ function renderBranchTab(){
   const filtered=getFiltered().filter(r=>r.branch===branch);
   const totalH=filtered.reduce((s,r)=>s+(parseFloat(r.hours)||0),0);
   const teachers=new Set(filtered.map(r=>r.teacher));
-
   document.getElementById('branch-stats').innerHTML=`
-    <div class="stat-card"><div class="stat-label">總堂數</div><div class="stat-value">${filtered.length} <span class="stat-unit">堂</span></div></div>
-    <div class="stat-card"><div class="stat-label">總時數</div><div class="stat-value">${totalH.toFixed(1)} <span class="stat-unit">H</span></div></div>
-    <div class="stat-card"><div class="stat-label">參與教師</div><div class="stat-value">${teachers.size} <span class="stat-unit">位</span></div></div>
-  `;
-
+    <div class="stat-card"><div class="stat-label">總堂數</div><div class="stat-value">${filtered.length}<span class="stat-unit">堂</span></div></div>
+    <div class="stat-card"><div class="stat-label">總時數</div><div class="stat-value">${totalH.toFixed(1)}<span class="stat-unit">H</span></div></div>
+    <div class="stat-card"><div class="stat-label">參與教師</div><div class="stat-value">${teachers.size}<span class="stat-unit">位</span></div></div>`;
   const tbody=document.getElementById('branch-tbody');
   if(!filtered.length){tbody.innerHTML=`<tr class="empty-row"><td colspan="6">本月該分校尚無紀錄</td></tr>`;return;}
-  tbody.innerHTML=filtered.map(r=>`
-    <tr>
-      <td class="center" style="font-family:'DM Mono',monospace;font-size:12px">${r.date||''}</td>
-      <td>${r.teacher||''}</td>
-      <td class="center"><span class="badge">${r.student||'-'}</span></td>
-      <td>${r.course||''}</td>
-      <td class="center"><span class="badge-type">${r.type||'-'}</span></td>
-      <td class="right" style="font-family:'DM Mono',monospace">${r.hours||0} h</td>
-    </tr>`).join('');
-
+  tbody.innerHTML=filtered.map(r=>`<tr>
+    <td class="center" style="font-family:'DM Mono',monospace;font-size:12px">${r.date}</td>
+    <td>${r.teacher||''}</td>
+    <td class="center"><span class="badge">${r.student||'-'}</span></td>
+    <td>${r.course||''}</td>
+    <td class="center"><span class="badge-type">${r.type||'-'}</span></td>
+    <td class="right" style="font-family:'DM Mono',monospace">${r.hours||0} h</td>
+  </tr>`).join('');
   document.getElementById('branch-text-area').classList.add('hidden');
-}
-
-function genBranchText(){
-  const branch=document.getElementById('branch-select').value;
-  const filtered=getFiltered().filter(r=>r.branch===branch);
-  const totalH=filtered.reduce((s,r)=>s+(parseFloat(r.hours)||0),0);
-  let lines=[];
-  lines.push(`📋 ${currentMonth} 【${branch}】上課明細`);
-  lines.push(`${'─'.repeat(30)}`);
-  filtered.forEach(r=>{
-    lines.push(`${r.date}  ${r.teacher}  ${r.course}【${r.type||''}】  ${r.student&&r.student!=='(不指定)'?r.student+' ':''}${r.hours}h`);
-  });
-  lines.push(`${'─'.repeat(30)}`);
-  lines.push(`合計：${filtered.length} 堂｜${totalH.toFixed(1)} 小時`);
-  return lines.join('\n');
 }
 
 // ── 報表分析 ──────────────────────────────────────────────────────────────────
 function renderAnalysisTab(){
-  const filtered=getFiltered();
-  const map={};
-  filtered.forEach(r=>{
-    if(!r.branch) return;
-    if(!map[r.branch]) map[r.branch]={total:0,teachers:new Set()};
-    map[r.branch].total+=parseFloat(r.hours)||0;
-    map[r.branch].teachers.add(r.teacher);
-  });
+  const filtered=getFiltered();const map={};
+  filtered.forEach(r=>{if(!r.branch) return;if(!map[r.branch])map[r.branch]={total:0,teachers:new Set()};map[r.branch].total+=parseFloat(r.hours)||0;map[r.branch].teachers.add(r.teacher);});
   const grid=document.getElementById('analysis-grid');
   const entries=Object.entries(map).sort((a,b)=>b[1].total-a[1].total);
   if(!entries.length){grid.innerHTML='<p style="color:var(--muted);font-weight:700;grid-column:1/-1;text-align:center;padding:40px">本月尚無資料</p>';return;}
-  grid.innerHTML=entries.map(([b,info])=>`
-    <div class="analysis-card">
-      <div style="background:#eff6ff;padding:12px;border-radius:14px;color:var(--blue);display:inline-flex;margin-bottom:16px">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
-      </div>
-      <div class="analysis-name">${b}</div>
-      <div style="font-family:'DM Mono',monospace;font-size:36px;font-weight:500;color:var(--text-dark);margin:8px 0">${info.total.toFixed(1)} <span style="font-size:13px;opacity:.3">h</span></div>
-      <div class="analysis-sub">參與教師：${info.teachers.size} 位</div>
-    </div>`).join('');
+  grid.innerHTML=entries.map(([b,info])=>`<div class="analysis-card">
+    <div style="background:#eff6ff;padding:12px;border-radius:13px;color:var(--blue);display:inline-flex;margin-bottom:14px"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg></div>
+    <div class="analysis-name">${b}</div>
+    <div style="font-family:'DM Mono',monospace;font-size:34px;font-weight:500;color:var(--text-dark);margin:6px 0">${info.total.toFixed(1)}<span style="font-size:12px;opacity:.3">h</span></div>
+    <div class="analysis-sub">參與教師：${info.teachers.size} 位</div>
+  </div>`).join('');
 }
 
-// ── 設定 ──────────────────────────────────────────────────────────────────────
+// ── 系統設定 ──────────────────────────────────────────────────────────────────
 function makeDraggable(container,key){
   let dragSrcIndex=null;
   container.querySelectorAll('.list-item').forEach(item=>{
@@ -866,141 +827,84 @@ function makeDraggable(container,key){
     item.addEventListener('dragleave',()=>item.classList.remove('drag-over'));
     item.addEventListener('drop',async e=>{
       e.preventDefault();item.classList.remove('drag-over');
-      const ti=parseInt(item.dataset.index);
-      if(dragSrcIndex===null||dragSrcIndex===ti) return;
-      const arr=[...config[key]];const[moved]=arr.splice(dragSrcIndex,1);arr.splice(ti,0,moved);
-      config[key]=arr;
+      const ti=parseInt(item.dataset.index);if(dragSrcIndex===null||dragSrcIndex===ti) return;
+      const arr=[...config[key]];const[moved]=arr.splice(dragSrcIndex,1);arr.splice(ti,0,moved);config[key]=arr;
       try{await apiPost({action:'saveConfig',config,salaryData});showToast('順序已更新','success');}catch(e){showToast('儲存失敗','error');}
       renderSettingsTab();refreshTeacherForm();
     });
   });
 }
-
 function renderSettingsTab(){
   document.getElementById('new-pwd').value='';
   const grid=document.getElementById('settings-grid');
-  const lists=[
-    {key:'teachers',title:'教師名單',color:'#d98c73'},
-    {key:'courses',title:'課程名單',color:'#8ba082'},
-    {key:'types',title:'課程類型',color:'#7c3aed'},
-    {key:'students',title:'學生名單',color:'#3b82f6'},
-    {key:'branches',title:'分校名單',color:'#d98c73'}
-  ];
+  const lists=[{key:'teachers',title:'教師名單',color:'#d98c73'},{key:'courses',title:'課程名單',color:'#8ba082'},{key:'types',title:'課程類型',color:'#7c3aed'},{key:'students',title:'學生名單',color:'#3b82f6'},{key:'branches',title:'分校名單',color:'#d98c73'}];
   const DOTS=`<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg>`;
   const X=`<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
   const PLUS=`<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`;
-
-  grid.innerHTML=lists.map(l=>`
-    <div class="list-editor">
-      <div class="list-editor-title" style="color:${l.color}">${l.title}<span class="drag-hint">可拖曳排序</span></div>
-      <div class="list-items" id="items-${l.key}">
-        ${(config[l.key]||[]).map((item,i)=>`
-          <div class="list-item" draggable="true" data-key="${l.key}" data-index="${i}">
-            <span class="drag-handle">${DOTS}</span>
-            <span style="flex:1;overflow:hidden;text-overflow:ellipsis">${item}</span>
-            <button class="btn-remove" data-key="${l.key}" data-val="${item}">${X}</button>
-          </div>`).join('')}
-      </div>
-      <div class="list-add-row">
-        <input type="text" placeholder="新增..." class="add-input" data-key="${l.key}" />
-        <button class="btn-add" style="background:${l.color}" data-key="${l.key}">${PLUS}</button>
-      </div>
-    </div>`).join('');
-
+  grid.innerHTML=lists.map(l=>`<div class="list-editor">
+    <div class="list-editor-title" style="color:${l.color}">${l.title}<span class="drag-hint">可拖曳排序</span></div>
+    <div class="list-items" id="items-${l.key}">${(config[l.key]||[]).map((item,i)=>`
+      <div class="list-item" draggable="true" data-key="${l.key}" data-index="${i}">
+        <span class="drag-handle">${DOTS}</span>
+        <span style="flex:1;overflow:hidden;text-overflow:ellipsis">${item}</span>
+        <button class="btn-remove" data-key="${l.key}" data-val="${item}">${X}</button>
+      </div>`).join('')}</div>
+    <div class="list-add-row">
+      <input type="text" placeholder="新增..." class="add-input" data-key="${l.key}" />
+      <button class="btn-add" style="background:${l.color}" data-key="${l.key}">${PLUS}</button>
+    </div>
+  </div>`).join('');
   lists.forEach(l=>{const c=document.getElementById('items-'+l.key);if(c)makeDraggable(c,l.key);});
-
-  grid.querySelectorAll('.btn-remove').forEach(btn=>{
-    btn.addEventListener('click',async e=>{
-      e.stopPropagation();const k=btn.dataset.key;
-      config[k]=config[k].filter(x=>x!==btn.dataset.val);
-      try{await apiPost({action:'saveConfig',config,salaryData});showToast('已刪除','success');}catch(e){showToast('儲存失敗','error');}
-      renderSettingsTab();refreshTeacherForm();
-    });
-  });
-  grid.querySelectorAll('.btn-add').forEach(btn=>{
-    btn.addEventListener('click',async()=>{
-      const k=btn.dataset.key;
-      const input=grid.querySelector(`.add-input[data-key="${k}"]`);
-      const val=input.value.trim();if(!val) return;
-      if((config[k]||[]).includes(val)){showToast('名單中已存在此項目','info');return;}
-      config[k]=[...(config[k]||[]),val];
-      try{await apiPost({action:'saveConfig',config,salaryData});showToast('已新增 '+val,'success');}catch(e){showToast('儲存失敗','error');}
-      renderSettingsTab();refreshTeacherForm();
-    });
-  });
-  grid.querySelectorAll('.add-input').forEach(input=>{
-    input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();grid.querySelector(`.btn-add[data-key="${input.dataset.key}"]`).click();}});
-  });
+  grid.querySelectorAll('.btn-remove').forEach(btn=>{btn.addEventListener('click',async e=>{e.stopPropagation();const k=btn.dataset.key;config[k]=config[k].filter(x=>x!==btn.dataset.val);try{await apiPost({action:'saveConfig',config,salaryData});showToast('已刪除','success');}catch(e){showToast('儲存失敗','error');}renderSettingsTab();refreshTeacherForm();});});
+  grid.querySelectorAll('.btn-add').forEach(btn=>{btn.addEventListener('click',async()=>{const k=btn.dataset.key;const input=grid.querySelector(`.add-input[data-key="${k}"]`);const val=input.value.trim();if(!val) return;if((config[k]||[]).includes(val)){showToast('名單中已存在此項目','info');return;}config[k]=[...(config[k]||[]),val];try{await apiPost({action:'saveConfig',config,salaryData});showToast('已新增 '+val,'success');}catch(e){showToast('儲存失敗','error');}renderSettingsTab();refreshTeacherForm();});});
+  grid.querySelectorAll('.add-input').forEach(input=>{input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();grid.querySelector(`.btn-add[data-key="${input.dataset.key}"]`).click();}});});
 }
 
+// ── 切換 ──────────────────────────────────────────────────────────────────────
 function renderAdmin(){
   refreshMonthSelect();
   populateSelect('salary-teacher-select',config.teachers);
   populateSelect('branch-select',config.branches);
   if(activeTab==='records') renderRecordsTab();
-  if(activeTab==='salary')  renderSalaryTab();
-  if(activeTab==='branch')  renderBranchTab();
+  if(activeTab==='salary') renderSalaryTab();
+  if(activeTab==='branch') renderBranchTab();
   if(activeTab==='analysis') renderAnalysisTab();
   if(activeTab==='settings') renderSettingsTab();
 }
-
-// ── VIEW SWITCH ───────────────────────────────────────────────────────────────
-function showTeacher(){
-  document.getElementById('view-teacher').classList.remove('hidden');
-  document.getElementById('view-admin').classList.add('hidden');
-  document.getElementById('nav-right').classList.add('hidden');
-  isAdmin=false; refreshTeacherForm();
-}
-function showAdmin(){
-  document.getElementById('view-teacher').classList.add('hidden');
-  document.getElementById('view-admin').classList.remove('hidden');
-  document.getElementById('nav-right').classList.remove('hidden');
-  isAdmin=true; switchTab('records'); renderAdmin();
-}
+function showTeacher(){document.getElementById('view-teacher').classList.remove('hidden');document.getElementById('view-admin').classList.add('hidden');document.getElementById('nav-right').classList.add('hidden');isAdmin=false;refreshTeacherForm();}
+function showAdmin(){document.getElementById('view-teacher').classList.add('hidden');document.getElementById('view-admin').classList.remove('hidden');document.getElementById('nav-right').classList.remove('hidden');isAdmin=true;switchTab('records');renderAdmin();}
 function switchTab(tab){
   activeTab=tab;
-  ['records','salary','branch','analysis','settings'].forEach(t=>{
-    document.getElementById('tab-'+t).classList.toggle('hidden',t!==tab);
-    document.querySelector(`.tab-btn[data-tab="${t}"]`).classList.toggle('active',t===tab);
-  });
+  ['records','salary','branch','analysis','settings'].forEach(t=>{document.getElementById('tab-'+t).classList.toggle('hidden',t!==tab);document.querySelector(`.tab-btn[data-tab="${t}"]`).classList.toggle('active',t===tab);});
   renderAdmin();
 }
 
-// ── MODALS ────────────────────────────────────────────────────────────────────
+// ── Modals ────────────────────────────────────────────────────────────────────
 function openPwdModal(){document.getElementById('pwd-input').value='';document.getElementById('pwd-modal').classList.remove('hidden');setTimeout(()=>document.getElementById('pwd-input').focus(),50);}
 function closePwdModal(){document.getElementById('pwd-modal').classList.add('hidden');}
 function verifyPassword(){
   const val=document.getElementById('pwd-input').value;
   if(val===config.password||val==='4628666'){closePwdModal();showAdmin();showToast('成功進入管理後台','success');}
-  else{showToast('密碼錯誤，預設為 4628666','error');document.getElementById('pwd-input').value='';document.getElementById('pwd-input').focus();}
+  else{showToast('認證失敗','error');document.getElementById('pwd-input').value='';document.getElementById('pwd-input').focus();}
 }
 function openDelModal(id){pendingDeleteId=id;document.getElementById('del-modal').classList.remove('hidden');}
 function closeDelModal(){pendingDeleteId=null;document.getElementById('del-modal').classList.add('hidden');}
 async function confirmDelete(){
   if(!pendingDeleteId) return;
-  const btn=document.getElementById('btn-confirm-del');
-  btn.disabled=true;btn.textContent='刪除中...';
-  try{
-    await apiPost({action:'delete',id:pendingDeleteId});
-    records=records.filter(r=>r.id!==pendingDeleteId);
-    closeDelModal();renderAdmin();showToast('紀錄已成功刪除','success');
-  }catch(e){showToast('刪除失敗，請重試','error');btn.disabled=false;btn.textContent='確定刪除';}
+  const btn=document.getElementById('btn-confirm-del');btn.disabled=true;btn.textContent='刪除中...';
+  try{await apiPost({action:'delete',id:pendingDeleteId});records=records.filter(r=>r.id!==pendingDeleteId);closeDelModal();renderAdmin();showToast('紀錄已成功刪除','success');}
+  catch(e){showToast('刪除失敗，請重試','error');btn.disabled=false;btn.textContent='確定刪除';}
 }
 
 // ── CSV ───────────────────────────────────────────────────────────────────────
 function exportCSV(){
-  const filtered=getFiltered();
-  if(!filtered.length){showToast('目前無資料可供下載','info');return;}
-  const header='日期,教師,分校,學生,課程,類型,時數\n';
-  const body=filtered.map(r=>`${r.date},${r.teacher},${r.branch},${r.student||''},${r.course},${r.type||''},${r.hours}`).join('\n');
-  download(`報帳明細_${currentMonth}.csv`,'\uFEFF'+header+body,'text/csv;charset=utf-8');
-}
-function download(name,content,type){
-  const blob=new Blob([content],{type});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();
+  const f=getFiltered();if(!f.length){showToast('目前無資料','info');return;}
+  const h='日期,教師,分校,學生,課程,類型,時數\n';
+  const b=f.map(r=>`${r.date},${r.teacher},${r.branch},${r.student||''},${r.course},${r.type||''},${r.hours}`).join('\n');
+  download(`報帳明細_${currentMonth}.csv`,'\uFEFF'+h+b,'text/csv;charset=utf-8');
 }
 
-// ── EVENTS ────────────────────────────────────────────────────────────────────
+// ── 事件綁定 ──────────────────────────────────────────────────────────────────
 document.getElementById('nav-brand').addEventListener('click',()=>{clickCount++;if(clickCount>=5){clickCount=0;openPwdModal();}});
 document.getElementById('btn-logout').addEventListener('click',()=>{showTeacher();showToast('已返回前台報帳畫面','info');});
 document.getElementById('footer-admin-btn').addEventListener('click',openPwdModal);
@@ -1013,18 +917,15 @@ document.getElementById('btn-export').addEventListener('click',exportCSV);
 document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>switchTab(btn.dataset.tab)));
 document.getElementById('month-select').addEventListener('change',e=>{currentMonth=e.target.value;renderAdmin();});
 document.getElementById('btn-update-pwd').addEventListener('click',async()=>{
-  const val=document.getElementById('new-pwd').value.trim();
-  if(!val){showToast('請輸入新密碼','info');return;}
-  config.password=val;
-  try{await apiPost({action:'saveConfig',config,salaryData});showToast('密碼已更新！','success');}catch(e){showToast('儲存失敗','error');}
+  const val=document.getElementById('new-pwd').value.trim();if(!val){showToast('請輸入新密碼','info');return;}
+  config.password=val;try{await apiPost({action:'saveConfig',config,salaryData});showToast('密碼已更新！','success');}catch(e){showToast('儲存失敗','error');}
   document.getElementById('new-pwd').value='';
 });
-
-// 老師薪資 tab 事件
 document.getElementById('salary-teacher-select').addEventListener('change',renderSalaryTab);
+document.getElementById('branch-select').addEventListener('change',renderBranchTab);
+
 document.getElementById('btn-gen-salary-text').addEventListener('click',()=>{
-  const txt=genSalaryText();
-  document.getElementById('salary-text-content').textContent=txt;
+  document.getElementById('salary-text-content').textContent=genSalaryText();
   document.getElementById('salary-text-area').classList.remove('hidden');
 });
 document.getElementById('btn-copy-salary-text').addEventListener('click',()=>{
@@ -1034,25 +935,21 @@ document.getElementById('btn-export-salary-csv').addEventListener('click',()=>{
   const teacher=document.getElementById('salary-teacher-select').value;
   const filtered=getFiltered().filter(r=>r.teacher===teacher);
   const groups={};
-  filtered.forEach(r=>{const k=`${r.course}||${r.type||''}`;if(!groups[k])groups[k]={course:r.course,type:r.type||'',count:0,hours:0};groups[k].count++;groups[k].hours+=parseFloat(r.hours)||0;});
-  let totalI=0,totalT=0;
-  const header='課程,類型,堂數,總時數,補習班收入小計,老師薪資小計\n';
-  const body=Object.entries(groups).map(([k,g])=>{
-    const sk=getSalaryKey(teacher,g.course,g.type);const sd=salaryData[sk]||{};
-    const i=calcAmt(sd.incomeAmt,sd.incomeMode,g.hours,g.count);
-    const t=calcAmt(sd.teacherAmt,sd.teacherMode,g.hours,g.count);
-    totalI+=i;totalT+=t;
-    return `${g.course},${g.type},${g.count},${g.hours.toFixed(1)},${i},${t}`;
+  filtered.forEach(r=>{const k=`${r.branch}||${r.course}||${r.type||''}`;if(!groups[k])groups[k]={branch:r.branch,course:r.course,type:r.type||'',count:0,hours:0};groups[k].count++;groups[k].hours+=parseFloat(r.hours)||0;});
+  const h='分校,課程,類型,堂數,總時數,補習班收入單價,計費方式,收入小計,老師薪資單價,計費方式,薪資小計\n';
+  let tI=0,tT=0;
+  const b=Object.entries(groups).map(([k,g])=>{
+    const sk=getSalaryKey(teacher,g.branch,g.course,g.type);const sd=salaryData[sk]||{};
+    const iT=calcAmt(sd.incomeAmt,sd.incomeMode,g.hours,g.count);const tT2=calcAmt(sd.teacherAmt,sd.teacherMode,g.hours,g.count);
+    tI+=iT;tT+=tT2;
+    return `${g.branch},${g.course},${g.type},${g.count},${g.hours.toFixed(1)},${sd.incomeAmt||0},${sd.incomeMode==='per_session'?'每堂':'每時'},${iT},${sd.teacherAmt||0},${sd.teacherMode==='per_session'?'每堂':'每時'},${tT2}`;
   }).join('\n');
-  const footer=`\n合計,,,, ${totalI},${totalT}`;
-  download(`${teacher}_${currentMonth}_薪資.csv`,'\uFEFF'+header+body+footer,'text/csv;charset=utf-8');
+  const footer=`\n合計,,,,,,,${tI},,, ${tT}`;
+  download(`${teacher}_${currentMonth}_薪資.csv`,'\uFEFF'+h+b+footer,'text/csv;charset=utf-8');
 });
 
-// 分校對帳 tab 事件
-document.getElementById('branch-select').addEventListener('change',renderBranchTab);
 document.getElementById('btn-gen-branch-text').addEventListener('click',()=>{
-  const txt=genBranchText();
-  document.getElementById('branch-text-content').textContent=txt;
+  document.getElementById('branch-text-content').textContent=genBranchText();
   document.getElementById('branch-text-area').classList.remove('hidden');
 });
 document.getElementById('btn-copy-branch-text').addEventListener('click',()=>{
@@ -1061,9 +958,9 @@ document.getElementById('btn-copy-branch-text').addEventListener('click',()=>{
 document.getElementById('btn-export-branch-csv').addEventListener('click',()=>{
   const branch=document.getElementById('branch-select').value;
   const filtered=getFiltered().filter(r=>r.branch===branch);
-  const header='日期,教師,學生,課程,類型,時數\n';
-  const body=filtered.map(r=>`${r.date},${r.teacher},${r.student||''},${r.course},${r.type||''},${r.hours}`).join('\n');
-  download(`${branch}_${currentMonth}_對帳.csv`,'\uFEFF'+header+body,'text/csv;charset=utf-8');
+  const h='日期,教師,學生,課程,類型,時數\n';
+  const b=filtered.map(r=>`${r.date},${r.teacher},${r.student||''},${r.course},${r.type||''},${r.hours}`).join('\n');
+  download(`${branch}_${currentMonth}_對帳.csv`,'\uFEFF'+h+b,'text/csv;charset=utf-8');
 });
 
 init();
